@@ -1,0 +1,28 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      
+      /*O "launch" vai rodar a aplicação, mas queremos o "attach" que com a aplicação rodando vamos 
+      no debug e iniciamos que ele se conecta a aplicação e começa a debugar de onde ela está*/
+      "request": "attach",
+      
+      /*Colocar o debug para inspecionar o NODE, para isso vamos ainda no script dev:server e 
+      adicionamos a flag --inspect, assim o VSCode vai inspecionar o node*/
+      "protocol": "inspector",
+      
+      "restart": true,
+      "name": "Debug",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ]
+    }
+  ]
+}
