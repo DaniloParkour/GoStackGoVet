@@ -1,8 +1,11 @@
 import { Router } from 'express';
+import appointmentsRouter from './appointments.routes';
 
 const routes = Router();
 
 // routes.get, post, get, delete, ...
-routes.get('/', (req, res) => res.json({ message: 'Hello Sthetics!' }));
+
+//Para qualquer tipo de solicitação mandar para appointments router
+routes.use('/appointments', appointmentsRouter);
 
 export default routes;
