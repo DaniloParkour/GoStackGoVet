@@ -1,7 +1,9 @@
+import 'reflect-metadata';
+
 import express from 'express';
 import routes from './routes';
 
-//Vai apenas executar o arquivo. Também, o arquivo não exporta conteúdo.
+// Vai apenas executar o arquivo. Também, o arquivo não exporta conteúdo.
 import './database';
 
 const app = express();

@@ -5,7 +5,9 @@
   "username": "postgres",
   "password": "admindocker",
   "database": "govetapp",
-
+  "entities": [
+    "./src/models/*.ts"
+  ],
   "migrations": [
     "./src/database/migrations/*.ts"
   ],

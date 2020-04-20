@@ -1,13 +1,17 @@
+import { EntityRepository, Repository } from 'typeorm';
 import Appointment from '../models/Appointment';
-import {isEqual} from 'date-fns';
 
+/*
 interface CreatrAppointmentDTO {
   provider: string;
   date: Date;
 }
+*/
 
-//Metodos para se fazer em cima dos dados. O CRUD vem aqui
-class AppointmentsRepository {
+// Passammos a notation com a entitade que esse repositório representa
+@EntityRepository(Appointment)
+class AppointmentsRepository extends Repository<Appointment> {
+  /*
   private appointments: Appointment[];
 
   constructor() {
@@ -17,14 +21,23 @@ class AppointmentsRepository {
   public all(): Appointment[] {
     return this.appointments;
   }
+  */
 
-  public findByDate(date: Date): Appointment | null {
-    const findAppointment = this.appointments.
-    find(appointment => isEqual(date, appointment.date));
-    
+  // public async findByDate(date: Date): Appointment | null {
+  // OBS ===> Uma função async se tiver retorno, vai SEMPRE ser uma promisse
+  // Nesse caso, no final o retorno ainda será Appointment ou NULL
+  public async findByDate(date: Date): Promise<Appointment | null> {
+    // const findAppointment = this.appointments.
+    // find(appointment => isEqual(date, appointment.date));
+
+    const findAppointment = await this.findOne({
+      where: { date },
+    });
+
     return findAppointment || null;
   }
 
+  /*
   //public create(provider: string, date: Date): Appointment {
   //public create(data: CreatrAppointmentDTO): Appointment {
   public create({provider, date}: CreatrAppointmentDTO): Appointment {
@@ -33,9 +46,7 @@ class AppointmentsRepository {
     const appointment = new Appointment({provider, date});
     this.appointments.push(appointment);
     return appointment;
-
-  }
-
+  */
 }
 
 export default AppointmentsRepository;
