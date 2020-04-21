@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 import User from '../models/User';
 
 interface Request {
@@ -11,7 +12,7 @@ class AuthenticateUserService {
   public async execute({
     email,
     password,
-  }: Request): Promise<{ user: 'User' }> {
+  }: Request): Promise<{ user: 'User'; token: 'string' }> {
     const userRepository = getRepository(User);
 
     const user = await userRepository.findOne({ where: { email } });
@@ -22,7 +23,13 @@ class AuthenticateUserService {
 
     if (!passwordMatched) throw new Error('Email or Password incorrect!');
 
-    return { user };
+    // O chave informada aqui NUNCA deve ir para outro local APENAS FICAR NO BACKEND
+    const token = sign({}, 'b7f04bff513c96a84f76e3dc783e7b56', {
+      subject: user.id,
+      expiresIn: '5d',
+    });
+
+    return { user, token };
   }
 }
 export default AuthenticateUserService;

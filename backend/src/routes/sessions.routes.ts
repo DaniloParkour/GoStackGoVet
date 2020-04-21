@@ -10,13 +10,13 @@ sessionsRouter.post('/', async (request, response) => {
 
     const authenticateUser = new AuthenticateUserService();
 
-    const { user } = await authenticateUser.execute({ email, password });
+    const { user, token } = await authenticateUser.execute({ email, password });
 
     // Nunca responder com o retorno do service diretamente pois o retorno pode mudar depois e conter informações que não deveriam ir na resposta
     // Usar sempre nomes de variáveis bem descritivas
     delete user.password;
 
-    return response.json({ user });
+    return response.json({ user, token });
   } catch (err) {
     response.status(400).json({ error: err.message });
   }
