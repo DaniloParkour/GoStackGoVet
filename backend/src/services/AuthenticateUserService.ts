@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import User from '../models/User';
+import authConfig from '../config/auth';
 
 interface Request {
   email: string;
@@ -24,9 +25,9 @@ class AuthenticateUserService {
     if (!passwordMatched) throw new Error('Email or Password incorrect!');
 
     // O chave informada aqui NUNCA deve ir para outro local APENAS FICAR NO BACKEND
-    const token = sign({}, 'b7f04bff513c96a84f76e3dc783e7b56', {
+    const token = sign({}, authConfig.jwt.secret, {
       subject: user.id,
-      expiresIn: '5d',
+      expiresIn: authConfig.jwt.expiresIn,
     });
 
     return { user, token };

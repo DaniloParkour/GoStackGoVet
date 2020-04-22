@@ -3,13 +3,21 @@ import { parseISO } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 import CreateAppointmentService from '../services/CreateAppointmentService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const appointmentsRouter = Router();
 
 // const appointments: Appointment[] = [];
 // const appointmentsRepository = new AppointmentsRepository();
 
+/* ensureAuthenticated irá passar para as próximas apenas seo usuário estiver autenticado.
+Isso torna as rotas de APPOINTMENTS disponíveis apenas para usuários autenticados. */
+appointmentsRouter.use(ensureAuthenticated);
+
 appointmentsRouter.get('/', async (req, res) => {
+  // O arquivo src/@types/express.d.ts define o campo USER dentro do tipo Request
+  console.log(`User ID${req.user}`);
+
   const appointmentsRepository = getCustomRepository(AppointmentsRepository);
   const appointments = await appointmentsRepository.find();
   return res.json(appointments);
