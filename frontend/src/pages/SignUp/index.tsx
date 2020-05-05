@@ -1,17 +1,24 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft, FiMail, FiLock, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import { Container, Content, Background } from './styles';
 import logoImg from '../../assets/logo.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import getValidationErrors from '../../utils/getValidationErros';
 
 const SignUp: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+
   const handleSubmit = useCallback(async (data: object) => {
     // schema de validação é usado para validar objetos inteiros e não campo por campo
     try {
+      // Zerar os erros mostrados no fomrulário
+      formRef.current?.setErrors({});
+
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome obrigatório.'),
         email: Yup.string()
@@ -29,7 +36,11 @@ const SignUp: React.FC = () => {
         abortEarly: false, // Foi colocado para não parar no primeiro erro. Por padrão o Yup para no primeiro erro
       });
     } catch (err) {
-      console.log(err);
+      const errors = getValidationErrors(err);
+      formRef.current?.setErrors(errors);
+      /* formRef.current?.setErrors({
+        name: 'Nome obrigatório',
+      }); */
     }
   }, []);
 
@@ -41,6 +52,7 @@ const SignUp: React.FC = () => {
         <Form
           initialData={{ email: 'defaultValue@email.com' }}
           onSubmit={handleSubmit}
+          ref={formRef}
         >
           <h1>Faça Seu Logon</h1>
           <Input name="name" icon={FiUser} placeholder="Nome" />
