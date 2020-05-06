@@ -6,7 +6,8 @@ import { FormHandles } from '@unform/core';
 import { Container, Content, Background } from './styles';
 import logoImg from '../../assets/logo.svg';
 // import { AuthContext } from '../../context/AuthContext';
-import { useAuth } from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 import getValidationErrors from '../../utils/getValidationErros';
 
 import Input from '../../components/Input';
@@ -26,6 +27,7 @@ const SignIn: React.FC = () => {
   // console.log(user);
 
   const { signIn } = useAuth();
+  const { addToast, removeToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: SignFormData) => {
@@ -47,7 +49,7 @@ const SignIn: React.FC = () => {
           abortEarly: false, // Foi colocado para não parar no primeiro erro. Por padrão o Yup para no primeiro erro
         });
 
-        signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
@@ -60,10 +62,15 @@ const SignIn: React.FC = () => {
           }); */
         }
 
-        // Disparar TOAST
+        addToast({
+          type: 'info',
+          title: 'Erro no login',
+          description:
+            'Ocorreu um erro no login, verifique se o email e senha estão corretos',
+        });
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (
