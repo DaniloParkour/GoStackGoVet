@@ -6,7 +6,7 @@ import { FormHandles } from '@unform/core';
 import { Container, Content, Background } from './styles';
 import logoImg from '../../assets/logo.svg';
 // import { AuthContext } from '../../context/AuthContext';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/AuthContext';
 import getValidationErrors from '../../utils/getValidationErros';
 
 import Input from '../../components/Input';
@@ -52,11 +52,15 @@ const SignIn: React.FC = () => {
           password: data.password,
         });
       } catch (err) {
-        const errors = getValidationErrors(err);
-        formRef.current?.setErrors(errors);
-        /* formRef.current?.setErrors({
-        name: 'Nome obrigatório',
-      }); */
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+          /* formRef.current?.setErrors({
+            name: 'Nome obrigatório',
+          }); */
+        }
+
+        // Disparar TOAST
       }
     },
     [signIn],
