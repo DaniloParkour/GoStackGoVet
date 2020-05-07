@@ -15,7 +15,7 @@ const ToastContainer: React.FC<ToastContainerProps> = ({ messages }) => {
     {
       from: { right: '-120%', opacity: 0, transform: 'rotateX(0deg)' }, // 120% do tamanho dele a partir da posição que ele está
       enter: { right: '0%', opacity: 1, transform: 'rotateX(360deg)' },
-      leave: { right: '-120%', opacity: 0, transform: 'rotateX(0deg)' },
+      leave: { right: '-120%', opacity: 0, transform: 'rotateX(360deg)' },
       // leave: { right: '-120%', opacity, ...CSSoptions },
     },
   );
