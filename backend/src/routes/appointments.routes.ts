@@ -24,23 +24,23 @@ appointmentsRouter.get('/', async (req, res) => {
 });
 
 appointmentsRouter.post('/', async (req, res) => {
-  try {
-    const { provider_id, date } = req.body;
+  // try {
+  const { provider_id, date } = req.body;
 
-    const parsedDate = parseISO(date);
+  const parsedDate = parseISO(date);
 
-    // O SERVICE já tem acesso ao AppointmentsRepository
-    const crateAppointment = new CreateAppointmentService();
+  // O SERVICE já tem acesso ao AppointmentsRepository
+  const crateAppointment = new CreateAppointmentService();
 
-    const appointment = await crateAppointment.execute({
-      date: parsedDate,
-      provider_id,
-    });
+  const appointment = await crateAppointment.execute({
+    date: parsedDate,
+    provider_id,
+  });
 
-    return res.json(appointment);
-  } catch (err) {
-    return res.status(400).json({ error: err.message });
-  }
+  return res.json(appointment);
+  // } catch (err) {
+  // return res.status(400).json({ error: err.message });
+  // }
 });
 
 export default appointmentsRouter;
