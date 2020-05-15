@@ -46,8 +46,8 @@ const SignIn:React.FC = () => {
               name='email'
               icon='mail'
               placeholder='E-Mail'
-              returnKeyType="next"  //Faz o ENTER nese input chamar a função passada pra props "onSubmitEditing"
-              onSubmitEditing={inputPasswordRef.current.focus()}
+              returnKeyType="next" //Altera o icon do input submit/enter para NEXT
+              onSubmitEditing={() => inputPasswordRef.current?.focus()} //Faz o ENTER nese input chamar a função
             />
             <Input
               ref={inputPasswordRef}
@@ -55,8 +55,8 @@ const SignIn:React.FC = () => {
               icon='lock'
               placeholder='Senha'
               secureTextEntry
-              returnKeyType="send" //Faz o ENTER nese input chamar a função passada pra props "onSubmitEditing"
-              onSubmitEditing={() => { //Manda o mesmo SUBMIT enviado quando pressionamos o botão Entrar
+              returnKeyType="send" //Altera o icon do input submit/enter para SEND
+              onSubmitEditing={() => { //Faz o ENTER nese input chamar a função
                 formRef.current?.submitForm();
                }}
             />
