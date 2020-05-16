@@ -8,7 +8,7 @@ import {Form} from '@unform/mobile';
 import {FormHandles} from '@unform/core';
 import * as Yup from 'yup';
 import getValidationErrors from '../../utils/getValidationErros';
-
+import api from '../../services/api';
 import logoImg from '../../assets/logo.png';
 import {Container, Title, BackToSignIn, BackToSignInText} from './styles';
 
@@ -50,7 +50,11 @@ const SignUp:React.FC = () => {
           abortEarly: false, // Foi colocado para não parar no primeiro erro. Por padrão o Yup para no primeiro erro
         });
 
-        //await api.post('/users', data);
+        await api.post('/users', data);
+
+        Alert.alert('Cadastro realizado com sucesso!', 'Você já pode fazer login na aplicação.');
+
+        navigation.goBack();
 
         /*addToast({
           type: 'success',
@@ -79,7 +83,7 @@ const SignUp:React.FC = () => {
         */
       }
     },
-    [],
+    [navigation],
   );
 
   return(

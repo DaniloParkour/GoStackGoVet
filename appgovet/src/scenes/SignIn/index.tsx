@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Form} from '@unform/mobile';
 import {FormHandles} from '@unform/core';
 import * as Yup from 'yup';
-
+import {useAuth} from '../../hooks/auth';
 import getValidationErrors from '../../utils/getValidationErros';
 
 import logoImg from '../../assets/logo.png';
@@ -25,6 +25,10 @@ const SignIn:React.FC = () => {
   const inputPasswordRef = useRef<TextInput>(null);
 
   const navigation = useNavigation();
+
+  const {signIn, user} = useAuth();
+
+  console.log(user);
 
   const handleSignIn = useCallback(
     async (data: SignFormData) => {
@@ -46,13 +50,14 @@ const SignIn:React.FC = () => {
           abortEarly: false, // Foi colocado para não parar no primeiro erro. Por padrão o Yup para no primeiro erro
         });
 
-        /*await signIn({
+        //Foi pego do Hooks useAuth, usar o contexto de autenticação
+        await signIn({
           email: data.email,
           password: data.password,
         });
-        */
 
-        //history.push('/dashboard');
+
+
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -73,7 +78,7 @@ const SignIn:React.FC = () => {
         });*/
       }
     },
-    [],
+    [signIn],
   );
 
   return(
